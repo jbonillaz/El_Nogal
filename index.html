@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#155b5d">
+<title>El Nogal · Memoria, Decisiones y Paz · V5 Final</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{--bg:#edf4f1;--ink:#14262d;--muted:#64747c;--p:#155b5d;--gold:#e0b653;--card:#fff;--line:#d9e3df;--shadow:0 14px 38px #123b4312;--danger:#a33b3b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{color:#fff;background:linear-gradient(135deg,#103b43,#287572);padding:20px 18px 24px}.wrap{max-width:1160px;margin:auto}
+.brand{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.hero{display:grid;grid-template-columns:1.5fr .7fr;gap:20px;align-items:center}h1{font-size:clamp(35px,7vw,64px);line-height:.92;margin:12px 0}.hero p{font-size:18px;line-height:1.55}
+.dove{font-size:92px;text-align:center;background:#ffffff12;border:1px solid #ffffff22;border-radius:30px;padding:20px}
+.peace-logo{position:relative;min-height:150px;overflow:hidden;border-radius:26px;background:linear-gradient(180deg,#ffffff18,#ffffff08);display:flex;align-items:center;justify-content:center}.dove-mark{font-size:74px;position:relative;z-index:4;filter:drop-shadow(0 6px 12px #0003)}.hands{position:absolute;right:18px;bottom:10px;font-size:30px;z-index:5}.sun{position:absolute;width:48px;height:48px;border-radius:50%;background:#e0b653;top:18px;right:45px;opacity:.9}.mountain{position:absolute;bottom:-35px;width:0;height:0;border-left:105px solid transparent;border-right:105px solid transparent;border-bottom:120px solid #7fb2a5;opacity:.75}.m1{left:-20px}.m2{right:-25px;border-bottom-color:#5c8e84;transform:scale(.8)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:14px;padding:12px 16px;font-weight:850;cursor:pointer;transition:.18s transform,.18s opacity}button:active{transform:scale(.97)}button.primary{background:var(--gold);color:#241d0b}button.dark{background:var(--p);color:#fff}button.ghost{background:#edf3f1;color:var(--p)}button.danger{background:#f5dddd;color:#7d2424}
+main{padding:25px 18px 65px}.screen{display:none}.screen.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:21px;box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}.tag{display:inline-block;padding:6px 10px;border-radius:99px;background:#e4efec;color:var(--p);font-size:11px;font-weight:900}.muted{color:var(--muted);line-height:1.55}
+.setup{max-width:720px;margin:auto;text-align:center}.avatars{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}.avatar{width:68px;height:68px;border-radius:50%;font-size:35px;background:#f0f5f3;border:3px solid transparent}.avatar.sel{border-color:var(--gold);box-shadow:0 0 0 4px #e0b65322}
+input,textarea,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:14px;margin:7px 0 12px;font:inherit}textarea{min-height:190px;resize:vertical}
+.dashboard{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}.stats{display:flex;gap:8px;flex-wrap:wrap}.stat{background:#e7efed;border-radius:12px;padding:9px 12px;font-weight:850}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.level{border:2px solid var(--line);padding:12px;border-radius:15px;background:#fff}.level.active{border-color:var(--p);box-shadow:0 0 0 4px #155b5d14}.level.done{background:#e8f3e9;border-color:#a6cba9}
+.route{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;margin:16px 0}.node{padding:8px;background:#fff;border:2px solid var(--line);border-radius:12px;min-height:52px;font-size:12px;text-align:center}.node.current{border-color:var(--p)}.node.done{background:#e8f3e9;border-color:#a6cba9}
+.question-context{background:linear-gradient(135deg,#eef8f4,#f7fbf9);border-left:5px solid var(--p);padding:16px;border-radius:14px;color:#33474e;line-height:1.55;font-size:16px}.q{font-size:22px;line-height:1.45;margin:18px 0}.answers{display:grid;gap:10px}.answers button{text-align:left;background:#f3f6f4;border:1px solid var(--line);font-size:16px}.answers button:disabled{opacity:.65}.feedback{padding:15px;border-radius:15px;margin-top:15px;animation:pop .25s ease}.good{background:#e5f3e9;color:#245f3d}.think{background:#fff3d8;color:#745315}@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.badgegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.badge{border:1px solid var(--line);border-radius:17px;padding:15px;text-align:center;background:#fff;opacity:.4;filter:grayscale(1)}.badge.unlocked{opacity:1;filter:none;background:#fff8df;border-color:#dfbd69;animation:shine .5s ease}.badge .ico{font-size:36px}@keyframes shine{0%{transform:scale(.9)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+.letter{background:#fffdf5;border:2px dashed #d5bd78}.quote{font-size:20px;font-weight:800;color:var(--p);line-height:1.45;text-align:center;padding:16px}
+.cert{background:white;border:10px solid #e5c66f;padding:30px;text-align:center;border-radius:12px}.cert h2{font-size:36px;margin:10px}.name{font-size:28px;font-weight:900;color:var(--p)}.big{font-size:30px;font-weight:900;color:var(--p)}
+.status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:99px;background:#e7efed;font-size:12px;font-weight:800}.dot{width:9px;height:9px;border-radius:50%;background:#7a8}.online .dot{background:#2e9b58}.offline .dot{background:#b77920}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}th{background:#e7efed;color:var(--p)}.teacher-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.modal{position:fixed;inset:0;background:#082e35cc;display:flex;align-items:center;justify-content:center;padding:18px;z-index:1000;backdrop-filter:blur(4px)}.modal.hidden{display:none}.welcome{max-width:720px;background:#fff;border-radius:28px;padding:30px;box-shadow:0 25px 80px #001b2240}.welcome h2{font-size:34px;color:var(--p);margin:10px 0}.welcome-lines{line-height:1.55;color:#33474e;font-size:16px}.welcome-lines p{margin:7px 0}
+.notice{padding:12px 14px;border-radius:13px;background:#fff3d8;color:#745315;margin:12px 0}.success{background:#e5f3e9;color:#245f3d}.error{background:#f7e5e5;color:#7d2424}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:13px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.dove{font-size:58px;padding:10px}.levels{grid-template-columns:1fr}.route{grid-template-columns:repeat(5,1fr)}}@media(max-width:600px){.route{grid-template-columns:repeat(3,1fr)}}
+@media print{header,nav,button,.no-print{display:none!important}body{background:white}main{padding:0}.screen{display:none!important}#certificate{display:block!important}.cert{box-shadow:none;min-height:90vh;display:grid;place-items:center}}
+
+.teacher-session-timeout{position:fixed;right:18px;bottom:18px;z-index:99;background:#fff7dc;border:1px solid #ead38b;color:#5e4d1b;padding:10px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);font-size:13px;font-weight:800;display:none}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+<div class="brand">V1 - Experiencia educativa</div>
+<div class="hero"><div><h1>El Nogal</h1><p><strong>Memoria, Decisiones y Paz</strong><br>Una experiencia interactiva para adolescentes de 12 a 14 años.</p></div><div class="dove" aria-label="Símbolo de paz"><div class="peace-logo"><span class="mountain m1"></span><span class="mountain m2"></span><span class="sun"></span><span class="dove-mark">🕊️</span><span class="hands">🤝</span></div></div></div>
+<nav>
+<button onclick="go('home')">Inicio</button>
+<button onclick="showContext()">📚 Contexto</button>
+<button class="primary" onclick="go('setup')">🎮 Jugar</button>
+<button onclick="go('teacher')">👨‍🏫 Docente</button>
+</nav>
+</div></header>
+
+<main class="wrap">
+<section id="home" class="screen active">
+<div class="grid">
+<div class="card"><span class="tag">30 DESAFÍOS</span><h2>Aprende jugando</h2><p class="muted">Cada desafío presenta contexto histórico y una selección múltiple para analizar antes de responder.</p></div>
+<div class="card"><span class="tag">3 NIVELES</span><h2>Conocer · Comprender · Construir paz</h2><p class="muted">El recorrido combina conocimientos históricos, derechos, pensamiento crítico y convivencia.</p></div>
+<div class="card"><span class="tag">CIERRE</span><h2>Mensaje para Colombia</h2><p class="muted">Al finalizar, cada participante podrá dejar un mensaje sobre la no repetición y la construcción de paz.</p></div>
+</div>
+<div class="card" style="margin-top:16px"><h2>¿Cómo funciona?</h2><p class="muted">Lee primero el contexto, analiza la pregunta, selecciona una opción y revisa la retroalimentación. El recorrido está diseñado para aprender, no solo para sumar puntos. Al terminar, escribe tu mensaje para Colombia y genera tu certificado.</p><button class="dark" onclick="go('setup')">Comenzar →</button></div>
+</section>
+
+<section id="setup" class="screen"><div class="card setup"><span class="tag">PERSONALIZA TU EXPERIENCIA</span><h2>¿Quién participa?</h2>
+<label>Nombre del estudiante</label><input id="student" maxlength="80" placeholder="Escribe tu nombre">
+<label>Nombre del equipo</label><input id="team" maxlength="80" placeholder="Ej. Constructores de Paz">
+<h3>Elige tu avatar</h3><div class="avatars" id="avatars"></div>
+<button class="primary" onclick="start()">🚀 Entrar al juego</button>
+<p class="muted">La aplicación guarda participantes, resultados, respuestas y mensajes en Supabase cuando la conexión está configurada. Si no hay conexión, conserva una copia local.</p>
+<div id="dbStatus" class="status offline"><span class="dot"></span> Comprobando base de datos…</div>
+</div></section>
+
+<section id="game" class="screen"><div class="card">
+<div class="dashboard"><div><span class="tag" id="levelTag">NIVEL</span><h2 id="gameTitle">Recorrido</h2><div class="muted" id="hello"></div></div>
+<div class="stats"><div class="stat">⭐ <span id="score">0</span></div><div class="stat">🏅 <span id="badgeCount">0</span></div><div class="stat">🧩 <span id="counter">1</span>/30</div></div></div>
+<div class="levels" id="levels"></div><div class="route" id="route"></div><div id="qbox"></div>
+</div></section>
+
+<section id="reflection" class="screen"><div class="card letter"><span class="tag">CIERRE · MENSAJE PARA COLOMBIA</span>
+<h2>🕊️ ¿Si pudiera enviar un mensaje a Colombia para que hechos como este no volvieran a repetirse, ¿qué diría?</h2>
+<div class="quote">“La memoria no cambia el pasado, pero puede ayudarnos a construir un futuro diferente”.</div>
+<p class="muted">Escribe tu mensaje personal para Colombia. Puede ser una reflexión, un compromiso o una idea para construir paz y evitar la repetición de la violencia.</p>
+<textarea id="letter" maxlength="1200" placeholder="Mi mensaje para Colombia es…"></textarea><br>
+<button class="primary" onclick="saveLetter()">💾 Guardar mensaje</button>
+<button onclick="showCertificate()">Ver certificado</button>
+<div id="saved" class="muted"></div>
+</div></section>
+
+<section id="certificate" class="screen"><div class="cert"><div style="font-size:55px">🕊️</div><div class="tag">CERTIFICADO DE PARTICIPACIÓN</div>
+<h2>El Nogal</h2><p>Se certifica que</p><div class="name" id="certName">Estudiante</div>
+<p>participó en la experiencia educativa<br><strong>“Memoria, Decisiones y Paz”</strong></p>
+<p>Equipo: <strong id="certTeam">—</strong></p><p>Completó el recorrido y reflexionó sobre memoria, derechos humanos y construcción de paz.</p>
+<p><strong id="certScore">0</strong> puntos · <strong id="certBadges">0</strong> insignias</p><br><small>Herramienta pedagógica · Versión final</small></div>
+<div class="no-print" style="text-align:center;margin-top:15px"><button class="primary" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button> <button onclick="go('home')">Inicio</button></div></section>
+
+<section id="teacher" class="screen">
+<div class="card">
+<span class="tag">PANEL DOCENTE</span>
+<h2>👨‍🏫 Gestión de resultados</h2>
+<p class="muted">Crea una cuenta de docente para consultar participantes, partidas, puntajes y mensajes para Colombia.</p>
+
+<div id="teacherLogin">
+  <h3>🔐 Iniciar sesión</h3>
+  <input id="teacherEmail" type="email" placeholder="Correo del docente" autocomplete="email">
+  <input id="teacherPassword" type="password" placeholder="Contraseña" autocomplete="current-password">
+  <button class="dark" onclick="teacherLogin()">Ingresar</button>
+  <button onclick="showTeacherRegister()">➕ Crear cuenta de docente</button>
+  <div id="teacherMsg" class="notice">El registro y acceso docente están protegidos por Supabase Auth.</div>
+<div class="notice" style="margin-top:8px">Estado de conexión: <span id="teacherDbState">comprobando…</span></div>
+</div>
+
+<div id="teacherRegister" style="display:none">
+  <h3>📝 Registrar cuenta de docente</h3>
+  <p class="muted">Usa un correo institucional o el correo que utilizarás para administrar la actividad.</p>
+  <input id="teacherRegEmail" type="email" placeholder="Correo del docente" autocomplete="email">
+  <input id="teacherRegPassword" type="password" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password">
+  <input id="teacherRegPassword2" type="password" placeholder="Repite la contraseña" autocomplete="new-password">
+  <button class="primary" onclick="teacherRegister()">Crear cuenta</button>
+  <button onclick="showTeacherLogin()">← Volver a iniciar sesión</button>
+  <div id="teacherRegMsg" class="notice">Después del registro, Supabase puede solicitar confirmar el correo electrónico.</div>
+</div>
+
+<div id="teacherPanel" style="display:none">
+  <div class="teacher-actions">
+    <button class="dark" onclick="loadTeacherData()">🔄 Actualizar</button>
+    <button class="primary" onclick="exportCSV()">📥 Exportar CSV</button>
+    <button onclick="teacherLogout()">Cerrar sesión</button>
+  </div>
+  <div class="grid" style="margin-bottom:16px">
+    <div class="card"><span class="tag">PARTICIPANTES</span><div class="big" id="tParticipants">0</div></div>
+    <div class="card"><span class="tag">PARTIDAS TERMINADAS</span><div class="big" id="tFinished">0</div></div>
+    <div class="card"><span class="tag">PROMEDIO</span><div class="big" id="tAverage">0</div></div>
+    <div class="card"><span class="tag">MEJOR PUNTAJE</span><div class="big" id="tBest">0</div></div>
+  </div>
+  <input id="teacherSearch" placeholder="🔎 Buscar por nombre, equipo o mensaje…" oninput="filterTeacherRows()">
+  <div class="tablewrap"><table>
+    <thead><tr><th>Nombre</th><th>Equipo</th><th>Fecha</th><th>Puntaje</th><th>Nivel</th><th>Insignias</th><th>Mensaje para Colombia</th></tr></thead>
+    <tbody id="teacherRows"></tbody>
+  </table></div>
+</div>
+</div>
+</section>
+</main>
+<footer><strong>Especialización Paz y Desarrollo Territorial - Conflicto Armado Grupo 10</strong></footer>
+
+<div id="welcomeModal" class="modal">
+<div class="welcome">
+<div class="tag">BIENVENIDA</div><h2>🕊️ Antes de comenzar</h2>
+<div class="welcome-lines">
+<p>• El 7 de febrero de 2003 ocurrió un atentado contra el Club El Nogal, en Bogotá.</p>
+<p>• El hecho se produjo en el contexto del conflicto armado colombiano.</p>
+<p>• El Centro Nacional de Memoria Histórica registra 36 personas muertas y 198 heridas.</p>
+<p>• Las consecuencias alcanzaron a las víctimas, sus familias y la comunidad.</p>
+<p>• El caso permite comprender cómo el conflicto también tuvo expresiones en espacios urbanos.</p>
+<p>• Estudiarlo ayuda a reconocer la dignidad de las víctimas y el derecho a la memoria.</p>
+<p>• La actividad invita a analizar fuentes, comprender consecuencias y pensar críticamente.</p>
+<p>• No se utilizan imágenes gráficas ni se recrea la violencia como entretenimiento.</p>
+<p>• Cada desafío presenta un contexto breve que debes leer antes de responder.</p>
+<p>• El propósito final es relacionar memoria, derechos, convivencia, no repetición y paz.</p>
+</div>
+<div class="muted" style="margin:12px 0 4px;font-size:12px">Fuente histórica base: Centro Nacional de Memoria Histórica (CNMH).</div><div class="notice">Lee con atención el contexto que acompaña cada pregunta. No se trata solamente de obtener puntos: se trata de comprender y reflexionar.</div>
+<button class="primary" style="width:100%" onclick="acceptWelcome()">Aceptar y continuar →</button>
+</div></div>
+
+<script>
+const SUPABASE_URL = "https://vcqnhilezqpilannxjlj.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_3j99FeBL51cy0svboOLkuA_b_QAxbac";
+let sb = null;
+let dbReady = false;
+let current = {student:"",team:"",avatar:"🙂",participantId:null,partidaId:null,start:null};
+let idx=0, score=0, answers=[], badges=[], letterSaved=false, teacherRowsData=[];
+
+function makeUUID(){
+  if(window.crypto?.randomUUID) return window.crypto.randomUUID();
+  if(window.crypto?.getRandomValues){
+    const a=new Uint8Array(16); window.crypto.getRandomValues(a);
+    a[6]=(a[6]&15)|64; a[8]=(a[8]&63)|128;
+    const h=[...a].map(b=>b.toString(16).padStart(2,"0"));
+    return h.slice(0,4).join("")+"-"+h.slice(4,6).join("")+"-"+h.slice(6,8).join("")+"-"+h.slice(8,10).join("")+"-"+h.slice(10,16).join("");
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0, v=c==="x"?r:(r&3)|8; return v.toString(16);
+  });
+}
+
+const Q = [{"theme": "Contexto histórico", "context": "El Club El Nogal estaba ubicado en Bogotá y era un club social y de negocios. El atentado ocurrió en una ciudad que también estaba siendo afectada por la expansión del conflicto armado hacia espacios urbanos.", "question": "¿En qué ciudad ocurrió el atentado contra el Club El Nogal?", "options": ["Bogotá", "Medellín", "Cali", "Cartagena"], "correct": 0, "explain": "El hecho ocurrió en Bogotá."}, {"theme": "Fecha del hecho", "context": "El Centro Nacional de Memoria Histórica registra el atentado del 7 de febrero de 2003. Recordar la fecha ayuda a ubicar el acontecimiento dentro de la historia reciente de Colombia.", "question": "¿Qué fecha corresponde al atentado?", "options": ["7 de febrero de 2003", "20 de julio de 2003", "7 de agosto de 2002", "1 de enero de 2004"], "correct": 0, "explain": "La fecha registrada es el 7 de febrero de 2003."}, {"theme": "Comprender el contexto", "context": "Un hecho histórico no ocurre de manera aislada. Para estudiarlo es necesario relacionarlo con las circunstancias políticas, sociales y del conflicto armado que rodeaban ese momento.", "question": "¿Por qué es importante estudiar el contexto de un hecho histórico?", "options": ["Para comprender sus causas y consecuencias", "Para justificar la violencia", "Para convertirlo en un concurso", "Para olvidar lo ocurrido"], "correct": 0, "explain": "El contexto ayuda a comprender el hecho de forma crítica."}, {"theme": "Memoria histórica", "context": "La memoria histórica busca reconocer lo ocurrido, escuchar diferentes voces y dignificar a quienes fueron afectados. No consiste solamente en memorizar fechas.", "question": "¿Cuál es una finalidad de la memoria histórica?", "options": ["Reconocer y dignificar a las víctimas", "Eliminar las distintas versiones", "Convertir el sufrimiento en entretenimiento", "Evitar hablar del pasado"], "correct": 0, "explain": "La memoria busca reconocer, dignificar y comprender."}, {"theme": "Naturaleza del hecho", "context": "El CNMH registra el caso como un atentado ocurrido en el marco del conflicto armado colombiano. El estudio escolar debe centrarse en sus consecuencias humanas y sociales.", "question": "¿Qué tipo de acontecimiento se estudia en esta experiencia?", "options": ["Un atentado en el contexto del conflicto armado", "Una celebración deportiva", "Una elección política", "Una competencia empresarial"], "correct": 0, "explain": "Se trata de un atentado relacionado con el conflicto armado."}, {"theme": "Víctimas", "context": "El atentado dejó personas muertas y heridas, además de consecuencias que alcanzaron a familias y comunidades. Las cifras ayudan a dimensionar el hecho, pero cada número representa una vida.", "question": "¿Qué debe ocupar un lugar central al estudiar este hecho?", "options": ["La dignidad y las experiencias de las personas afectadas", "La espectacularidad del ataque", "La competencia entre equipos", "Los detalles violentos"], "correct": 0, "explain": "El centro debe ser la dignidad de las personas afectadas."}, {"theme": "36 vidas", "context": "Las fuentes del CNMH registran 36 personas muertas y 198 heridas. Estas cifras permiten dimensionar el impacto inmediato del atentado.", "question": "Según el CNMH, ¿cuántas personas murieron?", "options": ["36", "18", "98", "198"], "correct": 0, "explain": "El CNMH registra 36 personas muertas."}, {"theme": "Personas heridas", "context": "Además de las víctimas mortales, muchas personas sobrevivieron con lesiones y otras consecuencias. El impacto de un hecho violento puede continuar mucho después del día en que ocurre.", "question": "¿Cuántas personas heridas registra el CNMH para este atentado?", "options": ["198", "36", "120", "250"], "correct": 0, "explain": "El CNMH registra 198 personas heridas."}, {"theme": "Impacto familiar", "context": "Una víctima no es solamente una persona que aparece en una cifra. Las familias pueden enfrentar pérdidas, cambios en su vida cotidiana, dolor y procesos largos de recuperación.", "question": "¿Por qué también se habla de las familias al estudiar las consecuencias?", "options": ["Porque las consecuencias pueden extenderse a su entorno cercano", "Porque las familias son responsables del hecho", "Porque reemplazan a las víctimas", "Porque permiten aumentar el puntaje"], "correct": 0, "explain": "Las consecuencias pueden afectar a familias y comunidades."}, {"theme": "Impacto comunitario", "context": "Los hechos violentos también modifican la percepción de seguridad y dejan preguntas en las comunidades. La memoria ayuda a reconocer esas huellas.", "question": "¿Qué puede producir un hecho de violencia en una comunidad?", "options": ["Consecuencias sociales y emocionales duraderas", "Solamente una noticia de un día", "Ningún cambio", "Únicamente un cambio deportivo"], "correct": 0, "explain": "Las consecuencias pueden ser sociales y emocionales."}, {"theme": "Conflicto en las ciudades", "context": "El informe ¡Basta Ya! explica que durante el conflicto armado la violencia también llegó a centros urbanos. El caso de El Nogal permite estudiar esa dimensión urbana.", "question": "¿Qué nos permite comprender este caso sobre el conflicto armado?", "options": ["Que también tuvo expresiones en espacios urbanos", "Que ocurrió solamente en zonas rurales", "Que no afectó a las ciudades", "Que fue un hecho sin relación con el conflicto"], "correct": 0, "explain": "El caso muestra una dimensión urbana del conflicto."}, {"theme": "Fuentes confiables", "context": "Para estudiar un hecho histórico es importante acudir a instituciones y documentos que permitan contrastar la información. El CNMH reúne investigaciones, testimonios y registros sobre el conflicto.", "question": "¿Qué práctica ayuda a comprobar un dato histórico?", "options": ["Consultar y contrastar fuentes confiables", "Repetir lo que circula en redes", "Elegir la versión más llamativa", "No preguntar"], "correct": 0, "explain": "Contrastar fuentes ayuda a verificar la información."}, {"theme": "Testimonios", "context": "Los testimonios permiten conocer cómo las personas vivieron y recuerdan los hechos. Deben tratarse con respeto y no convertirse en espectáculo.", "question": "¿Qué aportan los testimonios de las víctimas?", "options": ["Permiten conocer experiencias y memorias humanas", "Sirven para burlarse de las personas", "Reemplazan toda fuente histórica", "Solo sirven para competir"], "correct": 0, "explain": "Los testimonios aportan una dimensión humana de la memoria."}, {"theme": "Dignidad", "context": "Hablar de víctimas requiere un lenguaje respetuoso. Una actividad educativa no debe convertir el sufrimiento en entretenimiento ni usar imágenes gráficas para llamar la atención.", "question": "¿Cuál es una forma adecuada de tratar a las víctimas?", "options": ["Con respeto, dignidad y cuidado", "Con bromas", "Como personajes de un juego de combate", "Reduciendo sus historias a cifras"], "correct": 0, "explain": "El respeto y la dignidad son fundamentales."}, {"theme": "Derechos humanos", "context": "La vida, la integridad y la dignidad son valores fundamentales. Estudiar un atentado permite reflexionar sobre el daño que causa la violencia a las personas.", "question": "¿Qué idea se relaciona directamente con los derechos humanos?", "options": ["Toda persona merece respeto y protección de su dignidad", "La violencia es aceptable si gana un equipo", "Las víctimas pierden sus derechos", "Solo algunas personas merecen protección"], "correct": 0, "explain": "Los derechos humanos parten de la dignidad de todas las personas."}, {"theme": "Derecho a la verdad", "context": "La sociedad necesita conocer y comprender hechos de violencia para fortalecer la memoria y evitar que sean ocultados o distorsionados.", "question": "¿Por qué es importante buscar la verdad sobre hechos de violencia?", "options": ["Ayuda a comprender lo ocurrido y reconocer a las víctimas", "Para justificar a los responsables", "Para crear rumores", "Para evitar la memoria"], "correct": 0, "explain": "La verdad contribuye a la comprensión y al reconocimiento."}, {"theme": "No repetición", "context": "Recordar no significa quedarse atrapado en el pasado. La memoria también puede ayudar a identificar aprendizajes para que hechos similares no vuelvan a ocurrir.", "question": "¿Qué significa aprender para la no repetición?", "options": ["Transformar lo aprendido en acciones que prevengan nuevas violencias", "Olvidar el hecho", "Buscar venganza", "Evitar hablar de convivencia"], "correct": 0, "explain": "La no repetición busca prevenir nuevas violencias."}, {"theme": "Reconciliación", "context": "La reconciliación no significa negar el daño. Implica reconocer lo ocurrido, respetar a las víctimas y buscar caminos para convivir sin repetir la violencia.", "question": "¿Cuál opción representa mejor una actitud de reconciliación?", "options": ["Reconocer el daño y buscar caminos de convivencia", "Negar lo ocurrido", "Obligar a olvidar", "Responder a toda diferencia con violencia"], "correct": 0, "explain": "La reconciliación requiere reconocer el daño y construir convivencia."}, {"theme": "Diálogo", "context": "En una escuela aparecen desacuerdos entre compañeros. Resolverlos mediante escucha y diálogo permite buscar soluciones sin recurrir a la agresión.", "question": "¿Cuál sería una respuesta coherente con la construcción de paz?", "options": ["Escuchar a las partes y buscar un acuerdo", "Insultar a quien piensa diferente", "Imponer la solución por la fuerza", "Excluir a la otra persona"], "correct": 0, "explain": "El diálogo permite buscar acuerdos respetuosos."}, {"theme": "Pensamiento crítico", "context": "Las redes sociales pueden mezclar datos, opiniones y rumores. Pensar críticamente implica preguntar de dónde viene la información y si existen evidencias.", "question": "¿Qué pregunta ayuda a pensar críticamente?", "options": ["¿Cuál es la fuente y qué evidencia presenta?", "¿Cuántas personas lo compartieron?", "¿Suena emocionante?", "¿Lo dijo alguien famoso?"], "correct": 0, "explain": "La fuente y la evidencia son claves para evaluar información."}, {"theme": "Empatía", "context": "Conocer historias de víctimas puede ayudar a imaginar las consecuencias humanas de la violencia, sin asumir que conocemos exactamente lo que otra persona siente.", "question": "¿Qué actitud favorece la empatía?", "options": ["Escuchar con respeto y evitar juzgar rápidamente", "Comparar el dolor de las personas", "Hacer bromas sobre lo ocurrido", "Ignorar las emociones"], "correct": 0, "explain": "La escucha respetuosa favorece la empatía."}, {"theme": "Convivencia escolar", "context": "Los aprendizajes sobre paz también pueden aplicarse a situaciones cotidianas: discusiones, exclusión, rumores o desacuerdos en el aula.", "question": "¿Cuál acción ayuda a mejorar la convivencia escolar?", "options": ["Resolver desacuerdos mediante diálogo y acuerdos", "Difundir rumores", "Excluir a quien piensa diferente", "Responder con amenazas"], "correct": 0, "explain": "El diálogo y los acuerdos fortalecen la convivencia."}, {"theme": "Responsabilidad", "context": "Construir paz no depende solamente de grandes instituciones. Las decisiones cotidianas también pueden reducir conflictos y cuidar a otras personas.", "question": "¿Cuál es una responsabilidad cotidiana relacionada con la paz?", "options": ["Cuidar la forma en que hablamos y actuamos con los demás", "Ignorar los conflictos", "Promover rumores", "Buscar siempre ganar una discusión"], "correct": 0, "explain": "Las acciones cotidianas también construyen convivencia."}, {"theme": "Memoria y futuro", "context": "La frase de cierre de esta experiencia propone que recordar puede servir para cambiar lo que hacemos hacia adelante. La memoria tiene una dimensión de futuro.", "question": "¿Cómo puede relacionarse la memoria con el futuro?", "options": ["Convirtiendo los aprendizajes del pasado en acciones para la no repetición", "Eliminando el pasado", "Repitiendo las mismas respuestas", "Evitando toda conversación"], "correct": 0, "explain": "La memoria puede orientar decisiones para un futuro diferente."}, {"theme": "Pluralidad de memorias", "context": "Un mismo hecho puede ser recordado desde diferentes experiencias: víctimas, familias, instituciones y comunidades. Escuchar varias voces permite una comprensión más amplia.", "question": "¿Por qué es útil escuchar diferentes voces?", "options": ["Porque permite comprender distintas experiencias del mismo hecho", "Porque todas las versiones deben ser idénticas", "Porque elimina la necesidad de fuentes", "Porque convierte el hecho en una competencia"], "correct": 0, "explain": "La pluralidad ayuda a comprender diferentes experiencias."}, {"theme": "Uso responsable de imágenes", "context": "Una herramienta para adolescentes debe evitar imágenes gráficas o elementos que conviertan el sufrimiento en espectáculo. Se puede enseñar mediante textos, fuentes, preguntas y reflexión.", "question": "¿Qué recurso es más apropiado para esta experiencia?", "options": ["Textos, fuentes, preguntas y reflexión respetuosa", "Imágenes gráficas para impresionar", "Recreaciones de la violencia", "Competencias de dramatización"], "correct": 0, "explain": "El enfoque pedagógico prioriza aprendizaje y respeto."}, {"theme": "Rol del estudiante", "context": "El estudiante no es un espectador pasivo. Puede analizar información, escuchar a sus compañeros y construir argumentos propios.", "question": "¿Qué rol se busca en el estudiante?", "options": ["Participar, analizar, preguntar y reflexionar", "Memorizar sin comprender", "Repetir respuestas", "Competir sin dialogar"], "correct": 0, "explain": "Se busca una participación activa y reflexiva."}, {"theme": "Rol del docente", "context": "El docente acompaña la experiencia, aclara conceptos y cuida el ambiente emocional del grupo. No necesita convertir la actividad en una clase exclusivamente expositiva.", "question": "¿Cuál es una función importante del docente durante el juego?", "options": ["Acompañar, contextualizar y facilitar el diálogo", "Dar todas las respuestas", "Obligar a contar experiencias personales", "Premiar solamente al puntaje más alto"], "correct": 0, "explain": "El docente acompaña el aprendizaje y el diálogo."}, {"theme": "Aprendizaje final", "context": "Después de responder preguntas, el grupo puede convertir lo aprendido en compromisos concretos. El objetivo final es relacionar memoria con convivencia y paz.", "question": "¿Cuál sería un buen cierre educativo?", "options": ["Proponer compromisos concretos para la convivencia y la no repetición", "Terminar sin reflexión", "Elegir solamente al ganador", "Olvidar el tema"], "correct": 0, "explain": "El cierre debe conectar aprendizaje, convivencia y no repetición."}, {"theme": "Mensaje a Colombia", "context": "La actividad termina invitando a cada participante a pensar qué mensaje enviaría a Colombia para que hechos como este no vuelvan a repetirse. Es una oportunidad para expresar una idea propia.", "question": "¿Qué se busca con el mensaje final?", "options": ["Expresar un compromiso o reflexión para construir un futuro diferente", "Repetir una respuesta obligatoria", "Juzgar a otros estudiantes", "Competir por una frase"], "correct": 0, "explain": "El mensaje final busca una reflexión personal sobre la paz y la no repetición."}];
+
+const AVATARS=["🙂","🧑","👩","🧑‍🎓","🧑‍🚀","🧑‍🏫","🧑‍🔬","🧑‍🎨"];
+const BADGES=[
+["Primer paso","🚀"],["Explorador","🧭"],["Memoria","📚"],["Constructor de paz","🕊️"],
+["Voz reflexiva","💬"],["Gran recorrido","🏆"],["Equipo destacado","🤝"]
+];
+
+async function initDB(){
+  try{
+    setDBStatus(false,"Conectando con Supabase…");
+    if(SUPABASE_ANON_KEY.startsWith("PEGAR_")){setDBStatus(false,"Base de datos pendiente de configurar");return;}
+    if(!window.supabase || !window.supabase.createClient){
+      throw new Error("No se pudo cargar la biblioteca de Supabase. Revisa la conexión a Internet.");
+    }
+    sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    dbReady=true;
+    setDBStatus(true,"Base de datos conectada");
+  }catch(e){
+    console.error(e);
+    setDBStatus(false,"Conexión con Supabase no disponible: "+(e?.message||"revisa Internet o la configuración"));
+  }
+}
+function setDBStatus(ok,msg){
+ const el=document.getElementById("dbStatus");
+ if(el){el.className="status "+(ok?"online":"offline");el.innerHTML='<span class="dot"></span> '+msg;}
+ const d=document.getElementById("dbDiagnostic");
+ if(d){d.style.display="block";d.textContent=msg;}
+ const t=document.getElementById("teacherDbState");
+ if(t){t.textContent=msg;t.style.fontWeight="800";}
+}
+function go(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}
+function showContext(){document.getElementById("welcomeModal").classList.remove("hidden");}
+function acceptWelcome(){document.getElementById("welcomeModal").classList.add("hidden");go("home");}
+function checkWelcome(){document.getElementById("welcomeModal").classList.remove("hidden");go("home");}
+function renderAvatars(){
+ const el=document.getElementById("avatars"); el.innerHTML="";
+ AVATARS.forEach((a,i)=>{const b=document.createElement("button");b.className="avatar"+(i===0?" sel":"");b.textContent=a;b.type="button";b.onclick=()=>{current.avatar=a;document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel")};el.appendChild(b);});
+}
+async function start(){
+  const student=document.getElementById("student").value.trim(), team=document.getElementById("team").value.trim();
+  if(!student){alert("Escribe el nombre del estudiante.");return;}
+  current.student=student; current.team=team||"Sin equipo"; current.start=new Date().toISOString();
+  localStorage.setItem("nogalProfile",JSON.stringify({student:current.student,team:current.team,avatar:current.avatar}));
+  idx=0;score=0;answers=[];badges=[];letterSaved=false;current.participantId=null;current.partidaId=null;
+  if(dbReady){
+    try{
+      current.participantId=makeUUID();
+      const p=await sb.from("participantes").insert({
+        id:current.participantId,nombre:current.student,equipo:current.team,avatar:current.avatar,
+        ultima_actividad:new Date().toISOString()
+      });
+      if(p.error)throw p.error;
+
+      current.partidaId=makeUUID();
+      const g=await sb.from("partidas").insert({
+        id:current.partidaId,participante_id:current.participantId,estado:"en curso",puntaje:0,
+        nivel_alcanzado:1,desafios_completados:0,insignias_obtenidas:0,fecha_inicio:current.start
+      });
+      if(g.error)throw g.error;
+
+      setDBStatus(true,"Conectado · participante y partida registrados");
+      console.info("El Nogal · IDs creados:",current.participantId,current.partidaId);
+    }catch(e){
+      console.error("El Nogal · Error Supabase al iniciar:",e);
+      current.participantId=null;current.partidaId=null;
+      const detail=[e?.message,e?.details,e?.hint,e?.code].filter(Boolean).join(" | ");
+      setDBStatus(false,"ERROR SUPABASE: "+(detail||String(e)));
+      alert("No se pudo registrar esta partida en Supabase.\n\n"+(detail||String(e)));
+      return;
+    }
+  }else{
+    setDBStatus(false,"Modo local: Supabase no está disponible");
+  }
+  renderGame();go("game");playTone("start");
+}
+function renderLevels(){
+ const el=document.getElementById("levels");el.innerHTML="";
+ ["CONOCER","COMPRENDER","CONSTRUIR PAZ"].forEach((x,i)=>{const d=document.createElement("div");d.className="level "+(Math.floor(idx/10)===i?"active ":"")+(idx>=((i+1)*10)?"done":"");d.innerHTML="<strong>Nivel "+(i+1)+"</strong><br>"+x;el.appendChild(d);});
+}
+function renderRoute(){
+ const el=document.getElementById("route");el.innerHTML="";
+ Q.forEach((_,i)=>{const d=document.createElement("div");d.className="node "+(i<idx?"done ":"")+(i===idx?"current":"");d.innerHTML="<strong>"+(i+1)+"</strong><small>"+(i<10?"Conocer":i<20?"Comprender":"Paz")+"</small>";el.appendChild(d);});
+}
+function renderGame(){
+ renderLevels();renderRoute();
+ document.getElementById("score").textContent=score;document.getElementById("badgeCount").textContent=badges.length;document.getElementById("counter").textContent=Math.min(idx+1,30);
+ document.getElementById("hello").textContent=current.avatar+" "+current.student+" · "+current.team;
+ const level=Math.floor(idx/10)+1;document.getElementById("levelTag").textContent="NIVEL "+level;document.getElementById("gameTitle").textContent=["Conocer","Comprender","Construir paz"][level-1];
+ if(idx>=Q.length){finishGame();return;}
+ const q=Q[idx], box=document.getElementById("qbox");
+ box.innerHTML='<span class="tag">'+q.theme.toUpperCase()+'</span><div class="notice" style="margin-top:12px">📖 Lee el contexto antes de seleccionar tu respuesta.</div><div class="question-context"><strong>Contexto para leer antes de responder</strong><br>'+q.context+'</div><div class="q">'+q.question+'</div><div class="answers">'+q.options.map((o,i)=>'<button onclick="answer('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>').join("")+'</div>';
+}
+async function answer(choice){
+ const q=Q[idx];document.querySelectorAll(".answers button").forEach(b=>b.disabled=true);
+ const correct=choice===q.correct;const pts=correct?100:20;score+=pts;
+ const record={numero:idx+1,respuesta_seleccionada:choice,correcta:correct,puntos_obtenidos:pts};
+ answers.push(record);
+ if(current.partidaId && dbReady){
+   const r=await sb.from("respuestas").insert({
+     id:makeUUID(),partida_id:current.partidaId,desafio_numero:record.numero,
+     respuesta_seleccionada:record.respuesta_seleccionada,correcta:record.correcta,
+     puntos_obtenidos:record.puntos_obtenidos
+   });
+   if(r.error){console.error(r.error);setDBStatus(false,"Conectado, pero no se pudo guardar esta respuesta");}
+ }
+ if(correct){unlockProgressBadge();playTone("good");}else playTone("bad");
+ const box=document.getElementById("qbox");const fb=document.createElement("div");fb.className="feedback "+(correct?"good":"think");fb.innerHTML="<strong>"+(correct?"¡Muy bien!":"Sigamos pensando")+"</strong><br>"+q.explain;
+ box.appendChild(fb);
+ const next=document.createElement("button");next.className="primary";next.style.marginTop="12px";next.textContent=idx===Q.length-1?"Finalizar recorrido →":"Siguiente desafío →";next.onclick=()=>{idx++;renderGame();};
+ box.appendChild(next);renderLevels();renderRoute();document.getElementById("score").textContent=score;
+}
+function unlockProgressBadge(){
+ if(!badges.includes("Primer paso"))badges.push("Primer paso");
+ if(idx>=4&&!badges.includes("Explorador"))badges.push("Explorador");
+ if(idx>=9&&!badges.includes("Memoria"))badges.push("Memoria");
+ if(idx>=19&&!badges.includes("Constructor de paz"))badges.push("Constructor de paz");
+ if(idx>=24&&!badges.includes("Voz reflexiva"))badges.push("Voz reflexiva");
+ if(idx>=29&&!badges.includes("Gran recorrido"))badges.push("Gran recorrido");
+ if(current.team&&current.team!=="Sin equipo"&&!badges.includes("Equipo destacado"))badges.push("Equipo destacado");
+ document.getElementById("badgeCount").textContent=badges.length;
+}
+async function retryUnsavedAnswers(){
+  if(!dbReady || !current.partidaId)return;
+  for(const a of answers){
+    if(a.dbSaved===true) continue;
+    const r=await sb.from("respuestas").insert({
+      id:makeUUID(),partida_id:current.partidaId,desafio_numero:a.numero,
+      respuesta_seleccionada:a.respuesta_seleccionada,correcta:a.correcta,
+      puntos_obtenidos:a.puntos_obtenidos
+    });
+    if(!r.error)a.dbSaved=true;
+    else console.error("Reintento respuesta",a.numero,r.error);
+  }
+}
+
+async function finishGame(){
+ if(current.participantId && current.partidaId && dbReady){
+   try{
+     const now=new Date().toISOString();
+     const pu=await sb.from("participantes").update({ultima_actividad:now}).eq("id",current.participantId);
+     if(pu.error)throw pu.error;
+     const gu=await sb.from("partidas").update({
+       estado:"terminado",puntaje:score,nivel_alcanzado:3,desafios_completados:answers.length,
+       insignias_obtenidas:badges.length,fecha_finalizacion:now
+     }).eq("id",current.partidaId);
+     if(gu.error)throw gu.error;
+     setDBStatus(true,"Conectado · recorrido guardado");
+   }catch(e){console.error(e);setDBStatus(false,"Resultado guardado localmente; revisa la conexión");}
+ }
+ document.getElementById("letter").value=""; document.getElementById("saved").textContent="";
+ go("reflection");playTone("finish");
+}
+async function saveLetter(){
+ const text=document.getElementById("letter").value.trim(); if(!text){alert("Escribe tu mensaje para Colombia.");return;}
+ localStorage.setItem("nogalLetter_"+current.student,text);letterSaved=true;
+ if(current.partidaId && dbReady){
+   try{const {error}=await sb.from("reflexiones").upsert({partida_id:current.partidaId,contenido:text},{onConflict:"partida_id"});if(error)throw error;
+     document.getElementById("saved").innerHTML='<span class="success">✓ Mensaje guardado en la base de datos para consulta docente.</span>';
+   }catch(e){console.error(e);document.getElementById("saved").textContent="Mensaje guardado localmente; se intentará sincronizar cuando la base de datos esté disponible.";}
+ }else document.getElementById("saved").textContent="Mensaje guardado en este dispositivo.";
+}
+function showCertificate(){
+ document.getElementById("certName").textContent=current.student||"Estudiante";document.getElementById("certTeam").textContent=current.team||"—";
+ document.getElementById("certScore").textContent=score;document.getElementById("certBadges").textContent=badges.length;go("certificate");
+}
+
+let teacherIdleTimer=null;
+let teacherIdleListenersInstalled=false;
+const TEACHER_IDLE_MS=40000;
+
+function clearTeacherIdleTimer(){
+  if(teacherIdleTimer){clearTimeout(teacherIdleTimer);teacherIdleTimer=null;}
+}
+function teacherIsPanelVisible(){
+  const panel=document.getElementById("teacherPanel");
+  return !!panel && getComputedStyle(panel).display!=="none";
+}
+function showTeacherTimeoutNotice(){
+  const n=document.getElementById("teacherTimeoutNotice");
+  if(!n)return;
+  n.style.display="block";
+  setTimeout(()=>{n.style.display="none";},4500);
+}
+async function teacherAutoLogout(){
+  clearTeacherIdleTimer();
+  if(!teacherIsPanelVisible())return;
+  try{if(dbReady && sb?.auth) await sb.auth.signOut();}catch(e){console.error(e);}
+  showTeacherTimeoutNotice();
+  showTeacherLogin();
+  go("home");
+}
+function resetTeacherIdleTimer(){
+  if(!teacherIsPanelVisible())return;
+  clearTeacherIdleTimer();
+  teacherIdleTimer=setTimeout(teacherAutoLogout,TEACHER_IDLE_MS);
+}
+function installTeacherIdleListeners(){
+  if(teacherIdleListenersInstalled)return;
+  teacherIdleListenersInstalled=true;
+  ["pointerdown","mousemove","keydown","touchstart","scroll"].forEach(ev=>{
+    document.addEventListener(ev,()=>resetTeacherIdleTimer(),{passive:true});
+  });
+}
+
+function showTeacherRegister(){
+ document.getElementById("teacherLogin").style.display="none";
+ document.getElementById("teacherRegister").style.display="block";
+ document.getElementById("teacherPanel").style.display="none";
+}
+function showTeacherLogin(){
+ document.getElementById("teacherRegister").style.display="none";
+ document.getElementById("teacherLogin").style.display="block";
+ document.getElementById("teacherPanel").style.display="none";
+}
+async function teacherRegister(){
+ if(!dbReady){document.getElementById("teacherRegMsg").className="error";document.getElementById("teacherRegMsg").textContent="La conexión de Supabase aún no está disponible.";return;}
+ const email=document.getElementById("teacherRegEmail").value.trim();
+ const password=document.getElementById("teacherRegPassword").value;
+ const password2=document.getElementById("teacherRegPassword2").value;
+ if(!email||!password||!password2){document.getElementById("teacherRegMsg").textContent="Completa todos los campos.";return;}
+ if(password.length<6){document.getElementById("teacherRegMsg").className="error";document.getElementById("teacherRegMsg").textContent="La contraseña debe tener al menos 6 caracteres.";return;}
+ if(password!==password2){document.getElementById("teacherRegMsg").className="error";document.getElementById("teacherRegMsg").textContent="Las contraseñas no coinciden.";return;}
+ const {data,error}=await sb.auth.signUp({email,password});
+ if(error){document.getElementById("teacherRegMsg").className="error";document.getElementById("teacherRegMsg").textContent="No fue posible crear la cuenta: "+error.message;return;}
+ document.getElementById("teacherRegMsg").className="success";
+ if(data.session){
+   document.getElementById("teacherRegMsg").textContent="✓ Cuenta creada e iniciada. Cargando resultados…";
+   document.getElementById("teacherRegister").style.display="none";document.getElementById("teacherPanel").style.display="block";loadTeacherData();
+ }else{
+   document.getElementById("teacherRegMsg").textContent="✓ Cuenta creada. Revisa tu correo para confirmar la cuenta y luego inicia sesión.";
+ }
+}
+async function teacherLogin(){
+ if(!dbReady){document.getElementById("teacherMsg").className="notice";document.getElementById("teacherMsg").textContent="La conexión de Supabase aún no está disponible.";return;}
+ const email=document.getElementById("teacherEmail").value.trim(), password=document.getElementById("teacherPassword").value;
+ if(!email||!password){document.getElementById("teacherMsg").textContent="Completa correo y contraseña.";return;}
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error){document.getElementById("teacherMsg").className="error";document.getElementById("teacherMsg").textContent="No fue posible iniciar sesión: "+error.message;return;}
+ document.getElementById("teacherLogin").style.display="none";document.getElementById("teacherRegister").style.display="none";document.getElementById("teacherPanel").style.display="block";loadTeacherData();
+}
+async function teacherLogout(){clearTeacherIdleTimer();await sb.auth.signOut();showTeacherLogin();go("home");}
+async function loadTeacherData(){
+  if(!dbReady)return;
+  const {data:users,error:uerr}=await sb.from("participantes").select("id,nombre,equipo,fecha_registro").order("fecha_registro",{ascending:false});
+  if(uerr){document.getElementById("teacherMsg").className="error";document.getElementById("teacherMsg").textContent=uerr.message;return;}
+  const {data:games,error:gerr}=await sb.from("partidas").select("id,participante_id,estado,puntaje,nivel_alcanzado,insignias_obtenidas,fecha_inicio,fecha_finalizacion").order("fecha_inicio",{ascending:false});
+  if(gerr){document.getElementById("teacherMsg").className="error";document.getElementById("teacherMsg").textContent=gerr.message;return;}
+  const ids=(games||[]).map(g=>g.id);let refs=[];
+  if(ids.length){
+    const {data:r,error:re}=await sb.from("reflexiones").select("partida_id,contenido").in("partida_id",ids);
+    if(re)console.error(re);refs=r||[];
+  }
+  const rm=new Map(refs.map(r=>[r.partida_id,r.contenido]));
+  const rows=(users||[]).map(u=>{
+    const gs=(games||[]).filter(g=>g.participante_id===u.id);
+    const completed=gs.filter(g=>g.estado==="terminado").sort((a,b)=>new Date(b.fecha_finalizacion||0)-new Date(a.fecha_finalizacion||0));
+    const inProgress=gs.filter(g=>g.estado!=="terminado").sort((a,b)=>new Date(b.fecha_inicio||0)-new Date(a.fecha_inicio||0));
+    const g=completed[0]||inProgress[0];
+    return {
+      nombre:u.nombre,equipo:u.equipo,
+      fecha:g?.fecha_finalizacion||g?.fecha_inicio||u.fecha_registro,
+      puntaje:g?.puntaje??"—",nivel:g?.nivel_alcanzado??"—",
+      insignias:g?.insignias_obtenidas??"—",mensaje:g?rm.get(g.id)||"—":"Pendiente"
+    };
+  });
+  teacherRowsData=rows;
+  document.getElementById("tParticipants").textContent=rows.length;
+  document.getElementById("tFinished").textContent=rows.filter(r=>r.puntaje!=="—").length;
+  const vals=rows.filter(r=>typeof r.puntaje==="number").map(r=>r.puntaje);
+  document.getElementById("tAverage").textContent=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+  document.getElementById("tBest").textContent=vals.length?Math.max(...vals):0;
+  renderTeacherRows(rows);
+  const search=document.getElementById("teacherSearch");if(search)search.value="";
+}
+
+function renderTeacherRows(rows){
+ const body=document.getElementById("teacherRows");
+ if(!body)return;
+ body.innerHTML=(rows||[]).map(r=>`<tr><td>${esc(r.nombre)}</td><td>${esc(r.equipo||"")}</td><td>${esc(formatDate(r.fecha))}</td><td>${esc(String(r.puntaje))}</td><td>${esc(String(r.nivel))}</td><td>${esc(String(r.insignias))}</td><td>${esc(r.mensaje||"")}</td></tr>`).join("");
+}
+function filterTeacherRows(){
+ const q=(document.getElementById("teacherSearch")?.value||"").trim().toLowerCase();
+ const filtered=!q?teacherRowsData:teacherRowsData.filter(r=>[r.nombre,r.equipo,r.mensaje].some(v=>String(v??"").toLowerCase().includes(q)));
+ renderTeacherRows(filtered);
+}
+function exportCSV(){
+ const header=["Nombre","Equipo","Fecha","Puntaje","Nivel","Insignias","Mensaje"];
+ const lines=[header,...teacherRowsData.map(r=>[r.nombre,r.equipo,r.fecha,r.puntaje,r.nivel,r.insignias,r.mensaje])].map(row=>row.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(","));
+ const blob=new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="resultados_el_nogal.csv";a.click();URL.revokeObjectURL(a.href);
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function formatDate(v){if(!v)return"—";try{return new Date(v).toLocaleString("es-CO")}catch{return v}}
+function playTone(type){try{const A=window.AudioContext||window.webkitAudioContext,c=new A(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=type==="bad"?180:type==="finish"?720:520;g.gain.value=.03;o.start();o.stop(c.currentTime+.09)}catch(e){}}
+
+renderAvatars();initDB();checkWelcome();
+const saved=JSON.parse(localStorage.getItem("nogalProfile")||"null");if(saved){current={...current,...saved};document.getElementById("student").value=saved.student||"";document.getElementById("team").value=saved.team||"";}
+setTimeout(async()=>{try{
+  if(!dbReady)return;
+  const {data}=await sb.auth.getSession();
+  if(data?.session){
+    document.getElementById("teacherLogin").style.display="none";
+    document.getElementById("teacherRegister").style.display="none";
+    document.getElementById("teacherPanel").style.display="block";
+    await loadTeacherData();
+  }
+}catch(e){console.error(e);}},700);
+</script>
+<div id="teacherTimeoutNotice" class="teacher-session-timeout">🔒 Sesión docente cerrada por 40 segundos de inactividad.</div></body>
+</html>
