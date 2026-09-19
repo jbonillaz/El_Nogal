@@ -6,6 +6,12 @@
 <link rel="stylesheet" href="styles.css">
 
 
+
+
+
+
+
+
 </head>
 <body>
 <div class="app">
@@ -184,6 +190,9 @@
   <div class="mapOrder" id="mapOrder">🔓 Mundo 1 disponible</div><div class="mapSelectedZone" id="mapSelectedZone" aria-live="polite"></div>
   <div class="mapProfile" id="mapProfile" role="button" tabindex="0" onclick="openAvatarPicker()" aria-label="Cambiar avatar"><img id="mapProfileAvatar" src="avatar_nino.png" alt="Avatar seleccionado"><div class="mapProfileText"><b id="mapProfileName">Niño explorador</b><div class="mapProfileBar"><i id="mapProfileBarFill"></i></div><small id="mapProfileProgress">0 / 7 mundos</small><button class="profileChangeAvatar" type="button" onclick="event.stopPropagation();openAvatarPicker()">🧑‍🚀 Cambiar avatar</button></div></div>
   <div class="mapInstruction">👆 <b>Haz clic en el mundo disponible</b><br><span>Completa cada misión para desbloquear la siguiente.</span></div>
+  <div class="investigatorHud"><div class="hudTitle">🔎 INVESTIGADOR</div><b id="mapLevel">🌱 Nivel 1 · Aprendiz de memoria</b><span id="mapXP">0 / 30 XP</span><div class="hudActions"><button type="button" onclick="openAchievements()">🏅 Logros</button><button type="button" id="profileAbility" onclick="useAvatarAbility()">⚡ Usar habilidad</button><button type="button" onclick="openVerificationCenter()">🔐 Verificar</button></div></div>
+<div class="mapDiscoveryHud">🗺️ Pistas ocultas <b id="clueCount">0 / 6</b></div>
+<div class="mapClues" aria-label="Pistas ocultas del mapa"><button class="mapClueSpot" id="clue-c1" style="left:20%;top:54%" type="button" onclick="revealMapClue('c1')" aria-label="Pista oculta 1"><span>🔎</span><b>?</b></button><button class="mapClueSpot" id="clue-c2" style="left:42%;top:13%" type="button" onclick="revealMapClue('c2')" aria-label="Pista oculta 2"><span>📅</span><b>?</b></button><button class="mapClueSpot" id="clue-c3" style="left:63%;top:16%" type="button" onclick="revealMapClue('c3')" aria-label="Pista oculta 3"><span>📚</span><b>?</b></button><button class="mapClueSpot" id="clue-c4" style="left:82%;top:47%" type="button" onclick="revealMapClue('c4')" aria-label="Pista oculta 4"><span>🫶</span><b>?</b></button><button class="mapClueSpot" id="clue-c5" style="left:45%;top:57%" type="button" onclick="revealMapClue('c5')" aria-label="Pista oculta 5"><span>🕵️</span><b>?</b></button><button class="mapClueSpot" id="clue-c6" style="left:42%;top:78%" type="button" onclick="revealMapClue('c6')" aria-label="Pista oculta 6"><span>🕊️</span><b>?</b></button></div>
 
   <div class="mapWorldBadge badge1"><span>1</span>🧭</div><div class="mapWorldBadge badge2"><span>2</span>🧩</div><div class="mapWorldBadge badge3"><span>3</span>👥</div><div class="mapWorldBadge badge4"><span>4</span>🧠</div><div class="mapWorldBadge badge5"><span>5</span>🕵️</div><div class="mapWorldBadge badge6"><span>6</span>🛡️</div><div class="mapWorldBadge badge7"><span>7</span>💌</div>
   <div class="mapMissionLabel ml1"><b>MUNDO 1 · CONTEXTO</b><small>Explora el escenario</small></div><div class="mapMissionLabel ml2"><b>MUNDO 2 · EL HECHO</b><small>Reconstruye las pistas</small></div><div class="mapMissionLabel ml3"><b>MUNDO 3 · CONSECUENCIAS</b><small>Conoce su impacto</small></div><div class="mapMissionLabel ml4"><b>MUNDO 4 · MEMORIA</b><small>Conecta y recuerda</small></div><div class="mapMissionLabel ml5"><b>MUNDO 5 · VERDAD</b><small>Detecta la desinformación</small></div><div class="mapMissionLabel ml6"><b>MUNDO 6 · RUTA DE ATENCIÓN</b><small>Decide y avanza</small></div><div class="mapMissionLabel ml7"><b>MUNDO FINAL · CARTA POR LA PAZ</b><small>Tu mensaje cuenta</small></div>
@@ -261,3 +270,6 @@
 
 <script src="game.js" defer></script>
 </body></html>
+
+
+
